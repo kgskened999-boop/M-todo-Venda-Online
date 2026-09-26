@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método Kenedy | Comece no Digital</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050505;color:#fff;min-height:100vh
+}
+.app{min-height:100vh;display:flex;justify-content:center}
+.container{width:100%;max-width:720px;min-height:100vh;padding:28px 22px 60px}
+.progress-area{margin-bottom:55px}
+.progress-track{height:5px;background:#222;border-radius:20px;overflow:hidden}
+.progress-bar{height:100%;width:10%;background:#fff;border-radius:20px;transition:.4s}
+.screen{display:none;animation:fade .35s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.question{text-align:center}
+.question h1{
+    font-size:clamp(29px,5vw,43px);line-height:1.06;
+    font-weight:900;letter-spacing:-1.5px;text-transform:uppercase
+}
+.question h1 span,.final h1 span,.story-box h2 span,.content-block h2 span,
+.method-box h2 span{color:#777}
+.subtitle{margin-top:16px;color:#999;font-size:16px}
+.name-area{margin-top:32px}
+.name-label{display:block;text-align:left;color:#888;font-size:14px;margin-bottom:8px}
+.name-input{
+    width:100%;height:62px;border:1px solid #3a3a3a;border-radius:16px;
+    background:#111;color:#fff;padding:0 18px;font-size:17px;outline:none
+}
+.name-input:focus{border-color:#fff}
+.continue,.final-button{
+    width:100%;height:62px;margin-top:22px;border:0;border-radius:15px;
+    background:#fff;color:#000;font-size:16px;font-weight:900;cursor:pointer;transition:.2s
+}
+.continue:hover,.final-button:hover{background:#ddd;transform:translateY(-2px)}
+.options{margin-top:30px;display:flex;flex-direction:column;gap:11px}
+.option{
+    width:100%;min-height:66px;padding:11px 13px;display:flex;align-items:center;
+    gap:14px;background:#0d0d0d;border:1px solid #303030;border-radius:17px;
+    color:#fff;cursor:pointer;text-align:left;transition:.2s
+}
+.option:hover{background:#171717;border-color:#666;transform:translateY(-1px)}
+.custom-icon{
+    width:43px;height:43px;min-width:43px;border:1px solid #444;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;background:#171717;font-style:normal
+}
+.custom-icon svg,.learn-item svg{
+    width:21px;height:21px;stroke:#fff;fill:none;stroke-width:1.7;
+    stroke-linecap:round;stroke-linejoin:round
+}
+.option-text{flex:1;font-size:15px;line-height:1.35}
+.arrow{
+    width:28px;height:28px;border:1px solid #444;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#aaa;font-size:18px
+}
+.back{border:0;background:none;color:#666;cursor:pointer;font-size:13px;margin-top:24px}
+.back:hover{color:#fff}
+
+.final{text-align:center}
+.final-badge,.story-label,.section-mini-title{
+    display:inline-block;color:#888;font-size:11px;letter-spacing:1.6px;
+    text-transform:uppercase
+}
+.final-badge{padding:8px 14px;border:1px solid #333;border-radius:30px;margin-bottom:23px}
+.final h1{font-size:clamp(35px,6vw,55px);line-height:1.02;letter-spacing:-2px;font-weight:900}
+.final-description{
+    color:#999;font-size:17px;line-height:1.7;margin:24px auto 0;max-width:630px
+}
+.story-box,.attention-box,.method-box{
+    margin-top:32px;padding:25px;background:#101010;border:1px solid #303030;
+    border-radius:20px;text-align:left
+}
+.story-box h2,.content-block h2,.method-box h2{
+    margin-top:12px;font-size:25px;line-height:1.15
+}
+.story-box p,.content-block p,.method-box p{
+    color:#999;font-size:15px;line-height:1.7;margin-top:13px
+}
+.story-box strong{color:#fff}
+.attention-box{display:flex;gap:16px;text-align:left}
+.attention-icon{
+    width:43px;height:43px;min-width:43px;border:1px solid #444;border-radius:12px;
+    display:flex;align-items:center;justify-content:center
+}
+.attention-icon svg{width:21px;height:21px;stroke:#fff;fill:none;stroke-width:1.7}
+.attention-box h3{font-size:18px}
+.attention-box p{color:#999;font-size:14px;line-height:1.6;margin-top:8px}
+.content-block{margin-top:38px;text-align:left}
+.content-block h2{margin-top:10px;font-size:29px;line-height:1.12}
+.process{margin-top:25px;text-align:left}
+.process-item{
+    display:flex;gap:15px;padding:19px 0;border-bottom:1px solid #202020
+}
+.process-number{
+    width:42px;height:42px;min-width:42px;border:1px solid #444;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800
+}
+.process-item h3{font-size:14px;letter-spacing:.7px}
+.process-item p{color:#888;font-size:14px;line-height:1.5;margin-top:6px}
+.method-box{margin-top:38px}
+.learn{margin-top:38px;text-align:left}
+.learn-title{font-size:11px;color:#777;text-transform:uppercase;letter-spacing:1.6px;margin-bottom:12px}
+.learn-item{
+    display:flex;gap:13px;padding:15px 0;border-bottom:1px solid #202020
+}
+.learn-item span{color:#aaa;font-size:14px;line-height:1.45}
+.cta-final{margin-top:42px;text-align:center}
+.cta-line{width:55px;height:3px;background:#fff;margin:0 auto 24px;border-radius:5px}
+.cta-final h2{font-size:29px;line-height:1.15}
+.cta-final h2 span{color:#777}
+.cta-final p{color:#999;line-height:1.7;font-size:15px;margin:15px auto 0;max-width:580px}
+.cta-final small{display:block;color:#555;font-size:11px;line-height:1.5;margin-top:13px}
+@media(max-width:500px){
+    .container{padding:23px 17px 45px}
+    .progress-area{margin-bottom:45px}
+    .question h1{font-size:30px}
+    .option{min-height:62px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+<div class="container">
+
+<div class="progress-area">
+    <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+
+<!-- 1 -->
+<div class="screen active" data-step="1">
+    <div class="question">
+        <h1>ME DIGA QUAL O <span>SEU NOME</span> PARA DARMOS CONTINUIDADE</h1>
+        <p class="subtitle">Qual o seu primeiro nome?</p>
+    </div>
+    <div class="name-area">
+        <label class="name-label">Nome</label>
+        <input id="name" class="name-input" placeholder="Digite seu nome..." autocomplete="given-name">
+        <button class="continue" onclick="saveName()">CONTINUAR ATÉ O FINAL →</button>
+    </div>
+</div>
+
+<!-- 2 -->
+<div class="screen" data-step="2">
+    <div class="question">
+        <h1>JÁ TENTOU <span>VENDER</span> ALGUM PRODUTO NA INTERNET?</h1>
+        <p class="subtitle">Responda com toda sinceridade.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path></svg></i><span class="option-text">É minha primeira vez.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M5 7h10a4 4 0 0 1 0 8H9"></path><path d="M12 11l-3 4 3 4"></path></svg></i><span class="option-text">Já tentei, mas nunca consegui vender.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 9h8M8 13h6M8 17h4"></path></svg></i><span class="option-text">Eu já vendi na internet.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 3 -->
+<div class="screen" data-step="3">
+    <div class="question">
+        <h1>COMO SE ENCONTRA SUA VIDA <span>FINANCEIRA</span> HOJE?</h1>
+        <p class="subtitle">Responda com toda sinceridade.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 9h8M8 13h6M8 17h4"></path></svg></i><span class="option-text">Sou CLT.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M8 12h8"></path></svg></i><span class="option-text">Estou desempregado.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M16 7.5c-.8-1-2.1-1.5-4-1.5-2.4 0-4 1.1-4 3s1.6 3 4 3 4 1.1 4 3-1.6 3-4 3c-1.9 0-3.2-.5-4-1.5"></path></svg></i><span class="option-text">O dinheiro que tenho não dá para pagar as contas.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 9h8M8 13h5"></path></svg></i><span class="option-text">Já trabalho com a internet.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 4 -->
+<div class="screen" data-step="4">
+    <div class="question">
+        <h1>O QUE MAIS TE <span>ATRAPALHA</span> A TER RESULTADOS?</h1>
+        <p class="subtitle">Responda com toda sinceridade.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M16 7.5c-.8-1-2.1-1.5-4-1.5-2.4 0-4 1.1-4 3s1.6 3 4 3 4 1.1 4 3-1.6 3-4 3c-1.9 0-3.2-.5-4-1.5"></path></svg></i><span class="option-text">Tenho medo de investir e perder dinheiro.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M4 12h15"></path><path d="M13 6l6 6-6 6"></path></svg></i><span class="option-text">Já comprei cursos, mas não consigo aplicar.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"></rect><path d="M9 12h6"></path></svg></i><span class="option-text">Eu não sei escolher um produto.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 7v5l3 2"></path></svg></i><span class="option-text">Não sei por onde começar.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 5 -->
+<div class="screen" data-step="5">
+    <div class="question">
+        <h1>QUANTO VOCÊ GOSTARIA DE <span>GANHAR A MAIS</span> POR MÊS?</h1>
+        <p class="subtitle">Escolha a opção que mais combina com seu objetivo.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></i><span class="option-text">Até R$ 500.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></i><span class="option-text">Entre R$ 500 e R$ 1.500.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></i><span class="option-text">Entre R$ 1.500 e R$ 3.000.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></i><span class="option-text">Quero construir uma renda maior.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 6 -->
+<div class="screen" data-step="6">
+    <div class="question">
+        <h1>QUANTO <span>TEMPO</span> VOCÊ CONSEGUE DEDICAR?</h1>
+        <p class="subtitle">O importante é começar com uma rotina possível para você.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 7v5l3 2"></path></svg></i><span class="option-text">Até 30 minutos por dia.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 7v5l3 2"></path></svg></i><span class="option-text">Entre 30 minutos e 1 hora.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 7v5l3 2"></path></svg></i><span class="option-text">Entre 1 e 2 horas.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 7v5l3 2"></path></svg></i><span class="option-text">Mais de 2 horas por dia.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 7 -->
+<div class="screen" data-step="7">
+    <div class="question">
+        <h1>VOCÊ GOSTARIA DE <span>CRIAR UMA RENDA</span> PELA INTERNET?</h1>
+        <p class="subtitle">Não precisa abandonar seu trabalho atual para começar a aprender.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 7"></path></svg></i><span class="option-text">Sim, quero começar como renda extra.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 7"></path></svg></i><span class="option-text">Sim, quero construir algo para o futuro.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1.2.8-1.5 1.2-1.5 2.5"></path><path d="M12 16.5h.01"></path></svg></i><span class="option-text">Ainda estou tentando entender como funciona.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 8 -->
+<div class="screen" data-step="8">
+    <div class="question">
+        <h1>SE VOCÊ TIVESSE UMA <span>RENDA EXTRA</span>, O QUE FARIA?</h1>
+        <p class="subtitle">Pense no que realmente faria diferença para você.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M16 7.5c-.8-1-2.1-1.5-4-1.5-2.4 0-4 1.1-4 3s1.6 3 4 3 4 1.1 4 3-1.6 3-4 3c-1.9 0-3.2-.5-4-1.5"></path></svg></i><span class="option-text">Ajudaria minha família.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"></rect><path d="M9 12h6"></path></svg></i><span class="option-text">Pagaria minhas contas com mais tranquilidade.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M5 17L17 5"></path><path d="M9 5h8v8"></path></svg></i><span class="option-text">Investiria no meu futuro.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></i><span class="option-text">Quero ter mais liberdade financeira.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 9 -->
+<div class="screen" data-step="9">
+    <div class="question">
+        <h1>VOCÊ ESTÁ <span>DISPOSTO</span> A APRENDER E COLOCAR EM PRÁTICA?</h1>
+        <p class="subtitle">Resultado depende de aprendizado, aplicação e vários outros fatores.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 7"></path></svg></i><span class="option-text">Sim. Quero aprender e aplicar.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M5 17L17 5"></path><path d="M9 5h8v8"></path></svg></i><span class="option-text">Sim, mas preciso de um passo a passo.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="nextStep()"><i class="custom-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1.2.8-1.5 1.2-1.5 2.5"></path><path d="M12 16.5h.01"></path></svg></i><span class="option-text">Ainda estou avaliando.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- 10 -->
+<div class="screen" data-step="10">
+    <div class="question">
+        <h1>QUAL DESTES <span>OBJETIVOS</span> MAIS COMBINA COM VOCÊ?</h1>
+        <p class="subtitle">Última pergunta.</p>
+    </div>
+    <div class="options">
+        <button class="option" onclick="showFinal()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></i><span class="option-text">Começar aos poucos e aprender.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="showFinal()"><i class="custom-icon"><svg viewBox="0 0 24 24"><path d="M5 17L17 5"></path><path d="M9 5h8v8"></path></svg></i><span class="option-text">Criar uma nova fonte de renda.</span><span class="arrow">›</span></button>
+        <button class="option" onclick="showFinal()"><i class="custom-icon"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"></rect><path d="M9 12h6"></path></svg></i><span class="option-text">Construir um negócio digital.</span><span class="arrow">›</span></button>
+    </div>
+    <button class="back" onclick="previousStep()">← Voltar</button>
+</div>
+
+<!-- FINAL -->
+<div class="screen" data-step="11">
+<div class="final">
+
+<div class="final-badge">AGORA DEIXA EU TE EXPLICAR</div>
+
+<h1><span id="finalName">Você</span>, talvez você esteja mais perto <span>do que imagina.</span></h1>
+
+<p class="final-description">
+Depois de conhecer um pouco sobre você, quero te mostrar por que eu criei este método
+e como você pode começar a entender o mercado digital de uma forma simples.
+</p>
+
+<div class="story-box">
+<div class="story-label">QUEM ESTÁ POR TRÁS DO MÉTODO</div>
+<h2>Prazer, eu sou o <span>Kenedy.</span></h2>
+<p>Eu comecei minha jornada na internet procurando uma maneira diferente de trabalhar e construir novas possibilidades através do digital.</p>
+<p>Com o tempo, fui aprendendo sobre produtos digitais, ofertas, divulgação, vendas e principalmente sobre como a internet funciona.</p>
+<p>Ao longo dessa jornada, <strong>já ultrapassei R$ 100 mil em faturamento com a internet.</strong></p>
+</div>
+
+<div class="attention-box">
+<div class="attention-icon">
+<svg viewBox="0 0 24 24"><path d="M12 3l9 18H3L12 3z"/><path d="M12 9v5"/><path d="M12 17h.01"/></svg>
+</div>
+<div>
+<h3>Mas presta atenção em uma coisa.</h3>
+<p>Eu não estou dizendo que você vai conseguir os mesmos resultados que eu.</p>
+<p>Quero mostrar o processo que aprendi e organizar esse conhecimento para quem quer começar.</p>
+</div>
+</div>
+
+<div class="content-block">
+<div class="section-mini-title">COMO A INTERNET FUNCIONA</div>
+<h2>A internet não é mágica. <span>Existe um processo.</span></h2>
+<p>Todos os dias existem pessoas entrando na internet procurando respostas, soluções, produtos e serviços.</p>
+<p>Do outro lado existem pessoas e empresas oferecendo essas soluções.</p>
+<p>O mercado digital acontece quando você identifica uma necessidade, cria ou oferece uma solução e apresenta essa solução para pessoas que podem ter interesse.</p>
+</div>
+
+<div class="process">
+<div class="process-item"><div class="process-number">01</div><div><h3>PESSOAS</h3><p>Existem pessoas procurando resolver problemas todos os dias.</p></div></div>
+<div class="process-item"><div class="process-number">02</div><div><h3>PROBLEMA</h3><p>Você identifica aquilo que essas pessoas precisam resolver.</p></div></div>
+<div class="process-item"><div class="process-number">03</div><div><h3>SOLUÇÃO</h3><p>Você cria ou oferece uma solução para aquele problema.</p></div></div>
+<div class="process-item"><div class="process-number">04</div><div><h3>OFERTA</h3><p>Você apresenta essa solução de forma clara para quem pode ter interesse.</p></div></div>
+<div class="process-item"><div class="process-number">05</div><div><h3>DIVULGAÇÃO</h3><p>Você utiliza canais da internet para fazer sua oferta chegar até novas pessoas.</p></div></div>
+</div>
+
+<div class="method-box">
+<div class="section-mini-title">E FOI POR ISSO QUE EU CRIEI ISSO</div>
+<h2>Um método para quem quer <span>começar do zero.</span></h2>
+<p>Eu organizei aquilo que aprendi em um passo a passo para facilitar o caminho de quem está começando.</p>
+</div>
+
+<div class="learn">
+<div class="learn-title">DENTRO DO MÉTODO VOCÊ VAI APRENDER</div>
+<div class="learn-item"><svg viewBox="0 0 24 24"><path d="M5 19V5"/><path d="M5 19h14"/><path d="M8 15l3-3 2 2 5-6"/></svg><span>Como encontrar ideias de produtos digitais.</span></div>
+<div class="learn-item"><svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg><span>Como transformar uma ideia em uma oferta.</span></div>
+<div class="learn-item"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg><span>Como utilizar plataformas como Kiwify e Cakto.</span></div>
+<div class="learn-item"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 16 0"/><path d="M12 4v8l5 3"/></svg><span>Como estruturar sua primeira operação de vendas.</span></div>
+<div class="learn-item"><svg viewBox="0 0 24 24"><path d="M4 17l6-6 4 4 6-7"/><path d="M16 8h4v4"/></svg><span>Onde divulgar e como começar a criar conteúdo.</span></div>
+<div class="learn-item"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg><span>Como sair da teoria e começar a executar.</span></div>
+</div>
+
+<div class="cta-final">
+<div class="cta-line"></div>
+<h2><span>Você já chegou até aqui.</span><br>Agora conheça o método.</h2>
+<p>Veja todos os detalhes, conteúdos e condições na página de vendas.</p>
+<button class="final-button" onclick="window.location.href='SUA-PAGINA-DE-VENDAS'">QUERO CONHECER O MÉTODO →</button>
+<small>O conteúdo tem finalidade educacional. Resultados variam conforme aplicação, oferta, público e divulgação.</small>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+let currentStep=1;
+const totalQuestions=10;
+const screens=document.querySelectorAll(".screen");
+const progressBar=document.getElementById("progressBar");
+
+function updateScreen(){
+    screens.forEach(s=>s.classList.remove("active"));
+    const screen=document.querySelector(`[data-step="${currentStep}"]`);
+    if(screen) screen.classList.add("active");
+    progressBar.style.width=Math.min((currentStep/totalQuestions)*100,100)+"%";
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function saveName(){
+    const input=document.getElementById("name");
+    const name=input.value.trim();
+    if(!name){input.focus();return}
+    localStorage.setItem("leadName",name);
+    nextStep();
+}
+
+function nextStep(){
+    if(currentStep<totalQuestions){
+        currentStep++;
+        updateScreen();
+    }
+}
+
+function previousStep(){
+    if(currentStep>1){
+        currentStep--;
+        updateScreen();
+    }
+}
+
+function showFinal(){
+    currentStep=11;
+    screens.forEach(s=>s.classList.remove("active"));
+    document.querySelector('[data-step="11"]').classList.add("active");
+    progressBar.style.width="100%";
+    const name=localStorage.getItem("leadName");
+    if(name) document.getElementById("finalName").textContent=name;
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.getElementById("name").addEventListener("keydown",e=>{
+    if(e.key==="Enter") saveName();
+});
+
+const saved=localStorage.getItem("leadName");
+if(saved) document.getElementById("name").value=saved;
+</script>
+
+</body>
+</html>
